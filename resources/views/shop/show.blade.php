@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <aside class="bg-white h-fit rounded-xl shadow-sm p-6">
+        <aside class="bg-white rounded-xl shadow-sm p-6">
             <div class="text-3xl font-bold text-amber-600">Rp {{ number_format($product->price,0,',','.') }}</div>
             <div class="mt-2 text-sm text-gray-500">Stok: <span class="font-semibold text-gray-700">{{ $product->stock }}</span></div>
 
@@ -26,7 +26,10 @@
             </div>
 
             <form action="{{ route('shop.buy', $product->slug) }}" method="GET" class="mt-6">
-                
+                <div>
+                    <label class="block text-sm text-gray-700">Jumlah</label>
+                    <input type="number" name="qty" value="1" min="1" max="{{ $product->stock }}" class="w-full mt-1 px-3 py-2 rounded-lg transition shadow-sm focus:shadow-md" {{ $available ? '' : 'disabled' }} />
+                </div>
 
                 @if($available)
                     <button type="submit" class="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg">Bayar Sekarang</button>
@@ -78,7 +81,7 @@
 
     @if($related->isNotEmpty())
         <section class="mt-10">
-            <h2 class="text-lg font-semibold text-amber-300">Produk terkait</h2>
+            <h2 class="text-lg font-semibold text-gray-900">Produk terkait</h2>
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach($related as $r)
                     <a href="{{ route('shop.show', $r->slug) }}" class="block bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">

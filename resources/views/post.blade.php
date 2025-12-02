@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Halaman Article</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@php
+	$isProduction = app()->environment('production');
+	$manifestPath = $isProduction ? '../public_html/build/manifest.json' : public_path('build/manifest.json');
+@endphp
+        @if ($isProduction && file_exists($manifestPath))
+    @php
+	    $manifest = json_decode(file_get_contents($manifestPath), true)
+	@endphp
+	   <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
+	   <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+@else
+	   @viteReactRefresh
+	   @vite(['resources/js/app.js', 'resources/css/app.css'])
+@endif
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body class="bg-gray-50">
     <x-navbar></x-navbar>
@@ -28,13 +43,15 @@
                         <div class="mt-4 flex items-center text-gray-500 text-sm">
                             <div class="leading-relaxed">
                                 <span class="font-medium text-gray-800 block">{{ $post['author'] }}</span>
-                <time>
-                    @if(!empty($post['created_at']))
-                        {{ \Illuminate\Support\Carbon::parse($post['created_at'])->format('j M Y') }}
-                    @else
-                        mboh
-                    @endif
-                </time>                            </div>
+                                <time class="text-xs text-gray-500">
+                                    @if(!empty($post['created_at']))
+                                        {{ \Illuminate\Support\Carbon::parse($post['created_at'])->format('j M Y, H:i') }}
+                                    @else
+                                        Tanggal tidak tersedia
+                                    @endif
+                                </time>
+                            </div>
+                            <div class="ml-4 text-xs text-gray-400">• • •</div>
                         </div>
                     </div>
 
@@ -52,8 +69,8 @@
                     </div>
 
                     <article class="prose prose-lg max-w-none text-gray-800">
-                        {{-- Paragraf pembuka/eksklusif (Lead) --}}
-                        <p>{{ $post['body'] }}</p>
+                        {{-- Render body with line breaks preserved and proper paragraphs --}}
+                        {!! nl2br(e($post['body'])) !!}
                     </article>
 
                     <div class="mt-12 pt-6 border-t border-gray-200 flex justify-between items-center flex-wrap">
@@ -67,11 +84,9 @@
                         <div class="flex items-center space-x-3 mt-4 lg:mt-0">
                             <span class="text-gray-700 font-semibold">Bagikan:</span>
                             <a href="#" class="text-gray-400 hover:text-blue-600 transition" aria-label="Share to Twitter">
-                                [Twitter Icon]
-                            </a>
+<i class="fa-brands fa-twitter"></i>                            </a>
                             <a href="#" class="text-gray-400 hover:text-green-600 transition" aria-label="Share to WhatsApp">
-                                [WhatsApp Icon]
-                            </a>
+                                <i class="fa-brands fa-whatsapp"></i></a>
                         </div>
                     </div>
 
@@ -82,34 +97,31 @@
                     <div class="bg-gray-50 p-6 rounded-lg shadow-md">
                         <h3 class="text-xl font-bold text-gray-900 border-b border-amber-400 pb-3 mb-4">Paling Populer</h3>
                         <ul class="space-y-4">
-                            <li>
-                                <a href="#" class="group block">
-                                    <p class="text-xs font-medium text-amber-600">Komunitas</p>
-                                    <h4 class="text-lg font-semibold text-gray-800 group-hover:text-amber-600 transition duration-300 line-clamp-2">
-                                        Kisah Sukses Komunitas Daur Ulang Mandiri di Pedesaan
-                                    </h4>
-                                    <p class="text-sm text-gray-500 mt-1">15 Mei 2024</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="group block">
-                                    <p class="text-xs font-medium text-amber-600">Lingkungan</p>
-                                    <h4 class="text-lg font-semibold text-gray-800 group-hover:text-amber-600 transition duration-300 line-clamp-2">
-                                        Kampanye Bersih-Bersih Pantai: Ribuan Relawan Beraksi
-                                    </h4>
-                                    <p class="text-sm text-gray-500 mt-1">18 Mei 2024</p>
-                                </a>
-                            </li>
+                            @forelse($posts as $post)
+                                <li>
+                                    <a href="{{ route('posts.show', $post['slug']) }}" class="group block">
+                                        <p class="text-xs font-medium text-amber-600">{{ $post['label'] }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-800 group-hover:text-amber-600 transition duration-300 line-clamp-2">
+                                            {{ $post['title'] }}
+                                        </h4>
+                                        <p class="text-sm text-gray-500 mt-1">
+                                            @if(!empty($post['created_at']))
+                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post['created_at'])->format('j M Y') }}
+                                            @else
+                                                Tanpa tanggal
+                                            @endif
+                                        </p>
+                                    </a>
+                                </li>
+                            @empty
+                                <li>
+                                    <p class="text-sm text-gray-500">Tidak ada artikel tersedia</p>
+                                </li>
+                            @endforelse
                         </ul>
                     </div>
                     
-                    <div class="p-6 bg-green-100 rounded-lg text-center shadow-md">
-                        <h3 class="text-xl font-extrabold text-green-900 mb-2">Dapatkan Poin Sekarang!</h3>
-                        <p class="text-green-800 text-sm">Setor sampah terpilah dan tukarkan poin Anda dengan keuntungan dari kami.</p>
-                        <a href="#" class="mt-4 inline-block bg-green-700 text-white font-medium py-2 px-6 rounded-full hover:bg-green-800 transition">
-                            Lihat Reward
-                        </a>
-                    </div>
+                    
                 </aside>
                 
             </div>

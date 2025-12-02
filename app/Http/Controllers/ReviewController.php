@@ -38,18 +38,7 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'title' => 'nullable|string|max:255',
             'body' => 'nullable|string|max:2000',
-            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
-
-        $photos = [];
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                if ($photo->isValid()) {
-                    $path = $photo->store('reviews/' . Auth::id(), 'public');
-                    $photos[] = $path;
-                }
-            }
-        }
 
         Review::create([
             'user_id' => Auth::id(),
@@ -58,7 +47,6 @@ class ReviewController extends Controller
             'rating' => $data['rating'],
             'title' => $data['title'] ?? null,
             'body' => $data['body'] ?? null,
-            'photos' => !empty($photos) ? $photos : null,
             'approved' => true,
         ]);
 

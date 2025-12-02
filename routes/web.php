@@ -17,9 +17,14 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/posts/{slug}', function ($slug) {
 
     $post = Post::find($slug);
+    $posts = collect(Post::all())
+        ->sortByDesc(function($p){
+            return !empty($p['created_at']) ? strtotime($p['created_at']) : 0;
+        })
+        ->values();
 
-    return view('post', ['title' => 'Single post', 'post' => $post]);
-});
+    return view('post', ['title' => 'Single post', 'post' => $post, 'posts' => $posts]);
+})->name('posts.show');
 
 Route::middleware(['auth', 'verified', App\Http\Middleware\IsKurir::class])->group(function () {
     Route::get('/kurir/dashboard', [KurirDashboardController::class, 'index'])->name('kurir.dashboard');
@@ -84,8 +89,13 @@ Route::get('/form', function () {
     return view('form_sampah', ['title' => 'Blog', 'posts' => Post::all()]);
 });
 
-Route::get('/about', function () {
-    return view('about');
+Route::get('/test', function () {
+    $posts = collect(Post::all())
+        ->sortByDesc(function($p){
+            return !empty($p['created_at']) ? strtotime($p['created_at']) : 0;
+        })
+        ->values();
+    return view('test', ['posts' => $posts]);
 });
 
 // Admin area (protected)

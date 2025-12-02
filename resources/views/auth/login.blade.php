@@ -25,10 +25,10 @@
                 <form method="POST" action="{{ route('login') }}" id="login-form">
                     @csrf
 
-                    <div class="mb-6 animate-fade-in animation-delay-400">
+                    <div class="mb-6 animate-fade-in-up animation-delay-400">
                         <x-input-label for="email" :value="__('Email Address')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1 group">
-                            <input id="email" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="Enter your email" />
+                            <input id="email" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer transform hover:scale-[1.01]" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="Enter your email" />
                             <div class="absolute inset-y-0 right-3 flex items-center transition duration-300 peer-focus:text-green-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.88 5.25L19 8M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -38,14 +38,14 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4 animate-fade-in animation-delay-500">
+                    <div class="mb-4 animate-fade-in-up animation-delay-500">
                         <x-input-label for="password" :value="__('Password')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1 group">
                             <input id="password" name="password" autocomplete="current-password" required
-                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer"
+                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer transform hover:scale-[1.01]"
                                    type="password" placeholder="••••••••" />
 
-                            <button type="button" id="password-toggle" aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-green-600 transition duration-150">
+                            <button type="button" id="password-toggle" aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-green-600 transition duration-150 transform hover:scale-110">
                                 <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -59,46 +59,46 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
-                    <div class="flex items-center justify-between mt-2 animate-fade-in animation-delay-600">
+                    <div class="flex items-center justify-between mt-2 animate-fade-in-up animation-delay-600">
                         <label for="remember_me" class="inline-flex items-center group">
                             <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500 transition duration-150 transform group-hover:scale-105" name="remember">
                             <span class="ms-2 text-sm text-gray-600 group-hover:text-gray-800 transition duration-150">{{ __('Remember me') }}</span>
                         </label>
                         @if (Route::has('password.request'))
-                            <a class="text-sm text-green-600 hover:text-green-700 font-medium transition duration-150 hover:underline animate-pulse-subtle" href="{{ route('password.request') }}">
+                            <a class="text-sm text-green-600 hover:text-green-700 font-medium transition duration-150 hover:underline animate-pulse-subtle transform hover:scale-105" href="{{ route('password.request') }}">
                                 {{ __('Forgot your password?') }}
                             </a>
                         @endif
                     </div>
 
-                    <div class="mt-8 animate-fade-in animation-delay-700">
-                        <x-primary-button id="login-button" class="w-full flex justify-center items-center py-3 text-lg rounded-xl bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-95 active:shadow-sm">
+                    <div class="mt-8 animate-fade-in-up animation-delay-700">
+                        <x-primary-button id="login-button" class="w-full flex justify-center items-center py-3 text-lg rounded-xl bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-95 active:shadow-sm animate-bounce-subtle">
                             <span id="login-button-text" class="font-semibold">{{ __('Log in') }}</span>
                         </x-primary-button>
                     </div>
                 </form>
 
-                <div class="flex items-center my-6 animate-fade-in animation-delay-800">
+                <div class="flex items-center my-6 animate-fade-in-up animation-delay-800">
                     <div class="flex-grow border-t border-gray-200"></div>
                     <span class="flex-shrink mx-4 text-gray-500 text-sm">Or sign in with</span>
                     <div class="flex-grow border-t border-gray-200"></div>
                 </div>
 
-                <div class="flex justify-center items-center space-x-4 animate-fade-in animation-delay-900">
-                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md">
+                <div class="flex justify-center items-center space-x-4 animate-fade-in-up animation-delay-900">
+                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md hover:scale-105">
                         <img class="h-6 w-6 mr-2" src="{{ asset('image/Google.svg') }}" alt="Google">
                         <span class="hidden sm:inline">Google</span>
                     </button>
-                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md">
+                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md hover:scale-105">
                         <img class="h-6 w-6 mr-2" src="{{ asset('image/Facebook.svg') }}" alt="Facebook">
                         <span class="hidden sm:inline">Facebook</span>
                     </button>
                 </div>
             </div>
 
-            <div class="text-center mt-6 animate-fade-in animation-delay-1000">
+            <div class="text-center mt-6 animate-fade-in-up animation-delay-1000">
                 <p class="text-sm text-gray-200 drop-shadow">
-                    Belum punya akun? <a href="{{ route('register') }}" class="text-green-100 font-bold hover:text-white transition duration-150 hover:underline">Daftar Sekarang</a>
+                    Belum punya akun? <a href="{{ route('register') }}" class="text-green-100 font-bold hover:text-white transition duration-150 hover:underline transform hover:scale-105 inline-block">Daftar Sekarang</a>
                 </p>
             </div>
         </div>

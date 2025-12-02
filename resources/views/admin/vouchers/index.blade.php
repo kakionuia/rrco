@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 @foreach($vouchers as $v)
-                <tr class="border-t border-gray-300">
+                <tr class="border-t">
                     <td class="px-3 py-2">{{ ucfirst($v->tier) }}</td>
                     <td class="px-3 py-2">{{ $v->code }}</td>
                     <td class="px-3 py-2">@if($v->discount_type === 'percent') {{ $v->discount_value }}% @else Rp {{ number_format($v->discount_value,0,',','.') }} @endif</td>
@@ -31,7 +31,7 @@
                             @csrf @method('PATCH')
                             <input type="number" name="stock" value="{{ $v->stock }}" min="0" class="w-24 px-2 py-1 border rounded">
                             <input type="number" name="discount_value" value="{{ $v->discount_value }}" min="0" class="w-20 px-2 py-1 border rounded">
-                            <button class="px-3 py-1 bg-green-800 text-white rounded">Update</button>
+                            <button class="px-3 py-1 bg-emerald-600 text-white rounded">Update</button>
                         </form>
                     </td>
                 </tr>

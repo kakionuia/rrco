@@ -11,13 +11,130 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
-        .rating-stars {
-            color: #ffc107; /* Warna bintang kuning */
-        }
-        .rating-stars .far { /* Untuk bintang kosong */
-            color: #ddd;
+        /* Loading screen styles */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #FCD34D 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        #loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .loading-logo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-logo {
+            width: 200px;
+            height: 100px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+        }
+
+        .loading-spinner-ring {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border: 3px solid rgba(252, 211, 77, 0.2);
+            border-top: 3px solid #FCD34D;
+            border-radius: 50%;
+            animation: spin 2.5s linear infinite;
+        }
+
+        .loading-spinner-ring::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(27, 94, 32, 0.15);
+            border-top: 2px solid #1B5E20;
+            border-radius: 50%;
+            top: 13px;
+            left: 13px;
+            animation: spinReverse 1.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinReverse {
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-dots {
+            display: inline-block;
+            width: 6px;
+        }
+
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
 
         .swiper {
             width: 80%; /* Lebar karusel */
@@ -79,6 +196,19 @@
         </style>
     </head>
     <body class="bg-gradient-to-br from-green-700 to-green-900 bg-no-repeat w-full min-h-screen">
+        <!-- Loading Overlay -->
+        <div id="loading-overlay">
+            <div class="loading-container">
+                <div class="loading-logo-container">
+                    <div class="loading-spinner-ring"></div>
+                    <img src="{{ asset('image/logo-2.png') }}" alt="RRCO Logo" class="loading-logo">
+                </div>
+                <div class="loading-text">
+                    Memuat<span class="loading-dots"></span>
+                </div>
+            </div>
+        </div>
+
         {{-- Flash notifications (success / error / info) --}}
         @if(session('success') || session('error') || session('info'))
             <div aria-live="polite" class="fixed top-5 right-5 z-50 space-y-2">
@@ -110,5 +240,25 @@
                     @yield('content')
                 @endisset
             </main>
+
+        <script>
+        // Loading overlay handler
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 800);
+            }
+        });
+
+        // Hide loading overlay if page is cached (instant load)
+        if (document.readyState === 'complete') {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+        </script>
     </body>
 </html>

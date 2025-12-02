@@ -25,33 +25,33 @@
                 <form method="POST" action="{{ route('register') }}" id="register-form">
                     @csrf
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-400">
                         <x-input-label for="name" :value="__('Name')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
-                            <x-text-input id="name" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Full name" />
+                            <x-text-input id="name" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 transform hover:scale-[1.01]" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Full name" />
                         </div>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-500">
                         <x-input-label for="phone" :value="__('Phone')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
-                            <x-text-input id="phone" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400" type="text" name="phone" :value="old('phone')" required autocomplete="tel" placeholder="08xx-xxxx-xxxx" />
+                            <x-text-input id="phone" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 transform hover:scale-[1.01]" type="text" name="phone" :value="old('phone')" required autocomplete="tel" placeholder="08xx-xxxx-xxxx" />
                         </div>
                         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-600">
                         <x-input-label for="adress" :value="__('Address')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
-                            <x-text-input id="adress" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400" type="text" name="adress" :value="old('adress')" required autocomplete="street-address" placeholder="Your address" />
+                            <x-text-input id="adress" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 transform hover:scale-[1.01]" type="text" name="adress" :value="old('adress')" required autocomplete="street-address" placeholder="Your address" />
                         </div>
                         <x-input-error :messages="$errors->get('adress')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-700">
                         <label class="flex items-center space-x-3">
-                            <input id="is_gunungputri" name="is_gunungputri" type="checkbox" value="1" class="h-4 w-4 text-green-600 border-gray-300 rounded">
+                            <input id="is_gunungputri" name="is_gunungputri" type="checkbox" value="1" class="h-4 w-4 text-green-600 border-gray-300 rounded transform hover:scale-110 transition duration-150">
                             <div class="flex flex-col p-0">
                             <span class="text-sm text-gray-700">Merasa tinggal di GunungPutri? </span>
                             <span class="text-xs">*Belum mencakup semua wilayah Gunungputri, apabila wilayahmu tidak ada, tidak usah diisi</span>
@@ -59,10 +59,10 @@
                         </label>
                     </div>
 
-                    <div class="mb-4 hidden" id="village-wrap">
+                    <div class="mb-4 hidden animate-fade-in-up animation-delay-800" id="village-wrap">
                         <x-input-label for="village" :value="__('Wilayah')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
-                            <select id="village" name="village" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800">
+                            <select id="village" name="village" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 transform hover:scale-[1.01]">
                                 <option value="">-- Pilih Wilayah --</option>
                                 @foreach(\App\Models\Village::orderBy('name')->pluck('name') as $village)
                                     <option value="{{ $village }}" {{ old('village') == $village ? 'selected' : '' }}>{{ $village }}</option>
@@ -72,22 +72,22 @@
                         <x-input-error :messages="$errors->get('village')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-900">
                         <x-input-label for="email" :value="__('Email Address')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
-                            <x-text-input id="email" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="name@example.com" />
+                            <x-text-input id="email" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 transform hover:scale-[1.01]" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="name@example.com" />
                         </div>
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 animate-fade-in-up animation-delay-1000">
                         <x-input-label for="password" :value="__('Password')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
                             <input id="password" name="password" autocomplete="new-password" required
-                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer"
+                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer transform hover:scale-[1.01]"
                                    type="password" placeholder="••••••••" />
 
-                            <button type="button" id="password-toggle" aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-green-600 transition duration-150">
+                            <button type="button" id="password-toggle" aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-green-600 transition duration-150 transform hover:scale-110">
                                 <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -101,44 +101,44 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
-                    <div class="mb-6">
+                    <div class="mb-6 animate-fade-in-up animation-delay-1100">
                         <x-input-label for="password_confirmation" :value="__('Confirm Password')" class="text-gray-700 font-medium"/>
                         <div class="relative mt-1">
                             <input id="password_confirmation" name="password_confirmation" autocomplete="new-password" required
-                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer"
+                                   class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400 peer transform hover:scale-[1.01]"
                                    type="password" placeholder="••••••••" />
                         </div>
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
-                    <div class="mt-4">
-                        <x-primary-button id="register-button" class="w-full flex justify-center items-center py-3 text-lg rounded-xl bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-95 active:shadow-sm">
+                    <div class="mt-4 animate-fade-in-up animation-delay-1200">
+                        <x-primary-button id="register-button" class="w-full flex justify-center items-center py-3 text-lg rounded-xl bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg transition duration-300 transform hover:scale-[1.02] active:scale-95 active:shadow-sm animate-bounce-subtle">
                             <span id="register-button-text" class="font-semibold">{{ __('Register') }}</span>
                         </x-primary-button>
                     </div>
                 </form>
 
-                <div class="flex items-center my-6 animate-fade-in animation-delay-800">
+                <div class="flex items-center my-6 animate-fade-in-up animation-delay-1300">
                     <div class="flex-grow border-t border-gray-200"></div>
                     <span class="flex-shrink mx-4 text-gray-500 text-sm">Or sign up with</span>
                     <div class="flex-grow border-t border-gray-200"></div>
                 </div>
 
-                <div class="flex justify-center items-center space-x-4 animate-fade-in animation-delay-900">
-                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md">
+                <div class="flex justify-center items-center space-x-4 animate-fade-in-up animation-delay-1400">
+                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md hover:scale-105">
                         <img class="h-6 w-6 mr-2" src="{{ asset('image/Google.svg') }}" alt="Google">
                         <span class="hidden sm:inline">Google</span>
                     </button>
-                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md">
+                    <button class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white border border-gray-200 text-gray-700 shadow-sm hover:bg-gray-50 transition duration-150 transform hover:-translate-y-1 hover:shadow-md hover:scale-105">
                         <img class="h-6 w-6 mr-2" src="{{ asset('image/Facebook.svg') }}" alt="Facebook">
                         <span class="hidden sm:inline">Facebook</span>
                     </button>
                 </div>
             </div>
 
-            <div class="text-center mt-6 animate-fade-in animation-delay-1000">
+            <div class="text-center mt-6 animate-fade-in-up animation-delay-1500">
                 <p class="text-sm text-gray-200 drop-shadow">
-                    Sudah punya akun? <a href="{{ route('login') }}" class="text-green-100 font-bold hover:text-white transition duration-150 hover:underline">Masuk Sekarang</a>
+                    Sudah punya akun? <a href="{{ route('login') }}" class="text-green-100 font-bold hover:text-white transition duration-150 hover:underline transform hover:scale-105 inline-block">Masuk Sekarang</a>
                 </p>
             </div>
         </div>

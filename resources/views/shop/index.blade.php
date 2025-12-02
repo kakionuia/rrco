@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belanja Recycle</title>
+    <title>Tazaj Mart - UI dengan Tailwind CSS</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-            <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -21,12 +21,6 @@
         .product-card-img {
             height: 120px; 
             object-fit: contain; 
-        }
-        .clickable-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 30px rgba(2,6,23,0.08); }
-        .buy-btn { transition: transform 160ms ease, background-color 160ms; }
-        .buy-btn:hover { transform: scale(1.06); }
-        @media (max-width: 767px) {
-            .product-card-img { height: 140px; }
         }
         .rating-stars {
             color: #ffc107; /* Warna bintang kuning */
@@ -77,181 +71,127 @@
     .bootstrapCarousel .swiper-button-prev{
         display:flex; align-items:center; justify-content:center;
     }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(25px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeInUp {
-      animation: fadeInUp 1s ease forwards;
-    }
-    .delay-100 { animation-delay: 0.2s; }
-    .delay-200 { animation-delay: 0.4s; }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-white">
 <x-navbar></x-navbar>
-<!-- Small-screen search & category toolbar -->
-<div class="md:hidden bg-white/70 backdrop-blur-sm border-b border-gray-100 sticky top-21 z-40">
-        <div class="px-4 py-3 flex items-center space-x-3">
-        <form method="GET" action="{{ route('shop.index') }}" class="flex-1">
-            <div class="relative">
-                <input name="q" value="{{ $q ?? '' }}" placeholder="Cari produk..." class="w-full pl-3 pr-20 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-emerald-300" />
-                <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1 bg-green-600 text-white rounded-full text-sm">Cari</button>
+<section class="">
+    <div class="mx-auto w-full relative"> 
+        <div class="swiper bootstrapCarousel h-64 md:h-96 lg:h-[480px] shadow-xl overflow-hidden">
+            <div class="swiper-wrapper">
+                
+                <div class="swiper-slide">
+                    <div class="w-full h-full bg-cover bg-center flex items-center justify-center p-8 text-white" 
+                         style="background-image: url({{ asset('image/tas.jpg') }});">
+                        <div class="bg-black/50 p-4 rounded-lg text-center max-w-md">
+                            <h3 class="text-3xl font-bold">Slide Pertama</h3>
+                            <p class="mt-2 text-lg">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="w-full h-full bg-cover bg-center flex items-center justify-center p-8 text-white" 
+                         style="background-image: url('https://images.unsplash.com/photo-1557804506-669145281898?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="bg-black/50 p-4 rounded-lg text-center max-w-md">
+                            <h3 class="text-3xl font-bold">Slide Kedua</h3>
+                            <p class="mt-2 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="w-full h-full bg-cover bg-center flex items-center justify-center p-8 text-white" 
+                         style="background-image: url('https://images.unsplash.com/photo-1518175517855-32130e6118b7?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                        <div class="bg-black/50 p-4 rounded-lg text-center max-w-md">
+                            <h3 class="text-3xl font-bold">Slide Ketiga</h3>
+                            <p class="mt-2 text-lg">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </form>
-        <div>
-            <select onchange="location = this.value" class="border border-gray-300 rounded-md px-3 py-1 text-sm">
-                <option value="{{ route('shop.index') }}" {{ empty($category) ? 'selected' : '' }}>Semua</option>
-                <option value="{{ route('shop.index', ['category' => 'organik']) }}">Organik</option>
-                <option value="{{ route('shop.index', ['category' => 'elektronik']) }}">Elektronik</option>
-                    <option value="{{ route('shop.index', ['category' => 'anorganik']) }}">Anorganik</option>
-            </select>
+
+            <div class="swiper-pagination"></div>
+
+            <button class="swiper-button-next" aria-label="Next slide"></button>
+            <button class="swiper-button-prev" aria-label="Previous slide"></button>
         </div>
     </div>
-</div>
-
-<section class="pt-6 md:pt-25">
-    <div class="mx-auto w-full max-w-[1400px] relative">
-      <div class="swiper promoCarousel h-[400px] md:h-[520px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
-
-        <div class="swiper-wrapper">
-
-          <!-- SLIDE 1 -->
-          <div class="swiper-slide">
-            <div class="relative w-full h-full">
-              <img src="{{ asset('image/Recycling_Thumbnail.jpg') }}"
-                   alt="Promo Tas" class="absolute inset-0 w-full h-full object-cover" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-              <div class="relative z-10 flex flex-col justify-center items-start h-full p-10 md:p-16 text-white max-w-lg">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-3 animate-fadeInUp">Promo Akhir Tahun 🎉</h2>
-                <p class="text-lg md:text-xl mb-6 animate-fadeInUp delay-100">
-                  Diskon hingga <span class="text-yellow-400 font-bold">50%</span> untuk semua produk kami!
-                </p>
-                <a href="#produk"
-                   class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-md animate-fadeInUp delay-200">
-                  Belanja Sekarang
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 2 -->
-          <div class="swiper-slide">
-            <div class="relative w-full h-full">
-              <img src="{{ asset('image/natal.jpg') }}"
-                   alt="Promo Tas" class="absolute inset-0 w-full h-full object-cover" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-              <div class="relative z-10 flex flex-col justify-center items-start h-full p-10 md:p-16 text-white max-w-lg">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-3 animate-fadeInUp">Diskon Malam Natal</h2>
-                <p class="text-lg md:text-xl mb-6 animate-fadeInUp delay-100">
-                    Special harga untuk malam yang spesial. Dapatkan hadiah dari Santa, hohohoho!
-                </p>
-                <a href="#produk"
-                   class="bg-white hover:bg-gray-200 text-black font-semibold px-6 py-3 rounded-full shadow-md animate-fadeInUp delay-200">
-                  Coming Soon
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 3 -->
-          <div class="swiper-slide">
-            <div class="relative w-full h-full">
-             <img src="{{ asset('image/ramadhan.jpg') }}"
-                   alt="Promo Tas" class="absolute inset-0 w-full h-full object-fit" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-              <div class="relative z-10 flex flex-col justify-center items-start h-full p-10 md:p-16 text-white max-w-lg">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-3 animate-fadeInUp">Marhaban Ya Ramadhan!</h2>
-                <p class="text-lg md:text-xl mb-6 animate-fadeInUp delay-100">
-                  Spesial Ramadhan, temukan diskon menarik dan takjil gratis. Lesgoooo!
-                </p>
-                <a href="#produk"
-                   class="bg-green-800 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full shadow-md animate-fadeInUp delay-200">
-                  Beli Sekarang
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Pagination & Navigation -->
-        <div class="swiper-pagination !bottom-5"></div>
-        <div class="swiper-button-next !text-white"></div>
-        <div class="swiper-button-prev !text-white"></div>
-      </div>
-    </div>
-  </section>
-
+</section>
     <main class="container mt-20 mx-auto px-4 md:px-8 lg:px-12">
-        
+        <section class="bg-green-600 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between text-white mb-8">
+            <div class="md:w-1/2 text-center md:text-left mb-4 md:mb-0">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2">Get free delivery on shopping $200</h2>
+                <p class="text-lg mb-4">The best groceries delivered right to your home, free with eligble orders.</p>
+                <a href="#" class="bg-white text-green-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-100 transition duration-300">Shop Now</a>
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-end">
+                <img src="{{ asset('image/') }}" alt="">
+            </div>
+        </section>
+
         <section class="mb-12">
-            <div class="flex items-center">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">All Products</h2>
-            <div class="flex items-center mb-6">
-                        <a href="{{ route('shop.orders') }}" class="ml-2 inline-flex items-center px-3 py-1 bg-green-700 text-white border font-medium rounded-md text-sm hover:bg-green-700">Riwayat</a>
-            </div>
-            </div>
             {{-- Voucher claim section: show if there's a voucher for user's tier and stock available --}}
             @if(isset($tierVoucher) && $tierVoucher)
-                <div class="mb-6 bg-green-100 border border-green-100 rounded-lg p-4 flex items-center justify-between">
+                <div class="mb-6 bg-emerald-50 border border-emerald-100 rounded-lg p-4 flex items-center justify-between">
                     <div>
-                        <div class="text-sm font-semibold">Voucher untuk level Anda: {{ ucfirst($tierVoucher->tier) }}</div>
-                        <div class="text-xs font-semibold">Kode: <span class="font-mono">{{ $tierVoucher->code }}</span> — Diskon: @if($tierVoucher->discount_type === 'percent') {{ $tierVoucher->discount_value }}% @else Rp {{ number_format($tierVoucher->discount_value,0,',','.') }} @endif</div>
-                        <div class="text-xs  mt-1">Sisa kuota: {{ $tierVoucher->stock }}</div>
+                        <div class="text-sm text-emerald-800 font-semibold">Voucher untuk level Anda: {{ ucfirst($tierVoucher->tier) }}</div>
+                        <div class="text-xs text-gray-600">Kode: <span class="font-mono">{{ $tierVoucher->code }}</span> — Diskon: @if($tierVoucher->discount_type === 'percent') {{ $tierVoucher->discount_value }}% @else Rp {{ number_format($tierVoucher->discount_value,0,',','.') }} @endif</div>
+                        <div class="text-xs text-gray-500 mt-1">Sisa kuota: {{ $tierVoucher->stock }}</div>
                     </div>
                     <div class="">
                         @auth
                             @if($userClaimed)
-                                <div class="text-sm">Anda sudah mengklaim voucher ini.</div>
+                                <div class="text-sm text-gray-700">Anda sudah mengklaim voucher ini.</div>
                             @else
                                 <form action="{{ route('voucher.claim', $tierVoucher->id) }}" method="POST">
                                     @csrf
-                                    <button class="px-4 py-2 bg-green-600 text-white rounded">Klaim Voucher</button>
+                                    <button class="px-4 py-2 bg-emerald-600 text-white rounded">Klaim Voucher</button>
                                 </form>
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="px-4 py-2 bg-green-800 text-white rounded">Masuk untuk klaim</a>
+                            <a href="{{ route('login') }}" class="px-4 py-2 bg-emerald-600 text-white rounded">Masuk untuk klaim</a>
                         @endauth
                     </div>
                 </div>
             @endif
 
-            <div class="hidden md:flex lg:flex justify-between items-center bg-white p-4 rounded-lg shadow-sm mb-6">
-                <div class="flex-1 flex flex-col md:flex-row md:items-center md:space-x-4">
-                    <form method="GET" action="{{ route('shop.index') }}" class="flex-1 justify-between flex items-center space-x-2">
-                        <input name="q" value="{{ $q ?? '' }}" placeholder="Cari produk..." class="w-1/2 pl-3 pr-20 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-green-700" />
-                        <button type="submit" class=" justify-start px-3 py-1 bg-green-600 text-white rounded-lg text-sm">Cari</button>
+            <div class="hidden md:flex justify-between items-center bg-white p-4 rounded-lg shadow-sm mb-6">
+                <div class="flex space-x-4">
+                    <form method="GET" action="{{ route('shop.index') }}" class="flex items-center space-x-2">
+                        <input name="q" value="{{ $q ?? '' }}" placeholder="Search products..." class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                        <button class="px-3 py-1 bg-emerald-600 text-white rounded-md text-sm">Cari</button>
                     </form>
-
-                    <div class="md:mt-0">
-                        <select onchange="location = this.value" class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-green-700">
+                    <div>
+                        <select onchange="location = this.value" class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none">
                             <option value="{{ route('shop.index') }}" {{ empty($category) ? 'selected' : '' }}>Semua Kategori</option>
                             <option value="{{ route('shop.index', ['category' => 'organik']) }}" {{ (isset($category) && $category == 'organik') ? 'selected' : '' }}>Organik</option>
                             <option value="{{ route('shop.index', ['category' => 'elektronik']) }}" {{ (isset($category) && $category == 'elektronik') ? 'selected' : '' }}>Elektronik</option>
                             <option value="{{ route('shop.index', ['category' => 'anorganik']) }}" {{ (isset($category) && $category == 'anorganik') ? 'selected' : '' }}>Anorganik</option>
                         </select>
                     </div>
+                    <div class="flex items-center">
+                        <a href="{{ route('shop.orders') }}" class="ml-2 inline-flex items-center px-3 py-1 bg-white text-green-700 border border-green-200 rounded-md text-sm hover:bg-green-50">Riwayat</a>
+                    </div>
                 </div>
-
-               
+                <div class="flex items-center space-x-2">
+                    <label for="sort" class="text-sm text-gray-600">Sort by:</label>
+                    <select id="sort" class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                        <option>Popularity</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 @foreach($products as $product)
-                    @php $available = ($product->stock ?? 0) > 0 && ($product->is_active ?? true); @endphp
-                    @php
-                        $catName = strtolower($product->category?->slug ?? $product->category?->name ?? '');
-                        $isReward = ($catName === 'rewards' || $catName === 'reward');
-                    @endphp
-                    @if(!$isReward)
                     <div class="bg-white rounded-lg shadow-sm p-4 text-center relative hover:shadow-md transition duration-200 clickable-card" data-href="{{ route('shop.show', $product->slug) }}" style="cursor:pointer;">
+                        @php $available = ($product->stock ?? 0) > 0 && ($product->is_active ?? true); @endphp
                         @if($available)
-                            <span class="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full">Tersedia</span>
+                            <span class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">Tersedia</span>
                         @else
                             <span class="absolute top-2 left-2 bg-gray-400 text-white text-xs px-2 py-1 rounded-full">Stok Habis</span>
                         @endif
@@ -294,22 +234,17 @@
                         <div class="flex justify-between items-center mt-2">
                             <p class="text-lg font-bold text-gray-900">{{ number_format($product->price,2) }}</p>
                             <div class="flex items-center space-x-2">
+                                <a href="{{ route('shop.buy', $product->slug) }}" class="buy-btn bg-green-500 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-green-600 transition duration-200" aria-label="Beli {{ $product->name }}">
+                                    <i class="fas fa-plus"></i>
+                                </a>
                                 @auth
-                                    <a href="{{ route('shop.buy', $product->slug) }}" class="buy-btn bg-green-700 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-green-600 transition duration-200" aria-label="Beli {{ $product->name }}">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
                                     @if(auth()->user()->is_admin ?? false)
                                         <a href="{{ route('admin.products.edit', $product->id) }}" class="text-xs text-gray-600 hover:underline">Edit</a>
                                     @endif
-                                @else
-                                    <a href="{{ route('login') }}?redirect={{ urlencode(route('shop.buy', $product->slug)) }}" class="buy-btn bg-green-700 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-green-600 transition duration-200" aria-label="Login untuk beli">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
                                 @endauth
                             </div>
                         </div>
                     </div>
-                    @endif
                 @endforeach
             </div>
 
@@ -319,11 +254,14 @@
         </section>
     </main>
 
+    <x-footer></x-footer>
+
 </body>
 
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 <script>
+    // Make product cards clickable except when clicking on an anchor inside the card (e.g. buy button)
     document.addEventListener('click', function(e){
         var card = e.target.closest('.clickable-card');
         if (!card) return;
@@ -335,24 +273,30 @@
         }
     });
 
-   document.addEventListener('DOMContentLoaded', () => {
-      new Swiper('.promoCarousel', {
-        loop: true,
-        effect: 'fade',
-        speed: 800,
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      });
+    document.addEventListener('DOMContentLoaded', function(){
+        const carousel = new Swiper('.bootstrapCarousel', {
+            direction: 'horizontal',
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 0,
+            effect: 'slide',
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                type: 'bullets',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            a11y: {
+                enabled: true,
+            },
+        });
     });
 </script>
 </html>

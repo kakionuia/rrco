@@ -14,7 +14,7 @@
         <div class="space-x-3">
             <a href="{{ route('login') }}" class="px-6 py-2 bg-green-700 text-white rounded-lg font-semibold">Masuk</a>
             <a href="{{ route('register') }}" class="px-6 py-2 border border-green-700 text-green-700 rounded-lg">Daftar</a>
-            <a href="/" class="px-6 py-2 text-gray-600 rounded-lg">Kembali ke Beranda</a>
+            <a href="/" class="px-6 py-2 text-gray-600 rounded-lg">Kembali</a>
         </div>
     </div>
 </body>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <link rel="icon" href="{{ asset('image/logo-2.png') }}" type="image/png">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Home</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css"/>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <style>
         body {
             /* Subtle light gradient for a fresher, modern look */
@@ -146,10 +147,278 @@
         [data-product-card].reveal { transform: translateY(8px) scale(.998); }
         [data-product-card].reveal.in-view { transform: translateY(0) scale(1); opacity: 1; }
 
+        /* Loading screen styles */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #FCD34D 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .loading-logo-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-logo {
+            width: 200px;
+            height: 100px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+        }
+
+        .loading-spinner-ring {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border: 3px solid rgba(252, 211, 77, 0.2);
+            border-top: 3px solid #FCD34D;
+            border-radius: 50%;
+            animation: spin 2.5s linear infinite;
+        }
+
+        .loading-spinner-ring::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(27, 94, 32, 0.15);
+            border-top: 2px solid #1B5E20;
+            border-radius: 50%;
+            top: 13px;
+            left: 13px;
+            animation: spinReverse 1.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinReverse {
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-dots {
+            display: inline-block;
+            width: 6px;
+        }
+
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Welcome Page Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes zoomInSlow {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(252, 211, 77, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(252, 211, 77, 0.8); }
+        }
+
+        @keyframes rotateIcon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Apply animations to elements */
+        .hero-title {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .hero-description {
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+
+        .hero-button {
+            animation: slideInLeft 0.8s ease-out 0.4s both;
+        }
+
+        .hero-image {
+            animation: slideInRight 0.8s ease-out 0.2s both;
+        }
+
+        .feature-card {
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            animation: rotateIcon 20s linear infinite;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0s; }
+        .feature-card:nth-child(2) { animation-delay: 0.15s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.45s; }
+
+        .stat-number {
+            animation: zoomInSlow 0.8s ease-out;
+        }
+
+        .cta-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: left 0.5s ease-out;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            animation: fadeInUp 0.8s ease-out;
+        }
         </style>
     
     </head>
     <body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loading-container">
+            <div class="loading-logo-container">
+                <div class="loading-spinner-ring"></div>
+                <img src="{{ asset('image/logo-2.png') }}" alt="RRCO Logo" class="loading-logo">
+            </div>
+            <div class="loading-text">
+                Memuat<span class="loading-dots"></span>
+            </div>
+        </div>
+    </div>
+
     <x-navbar></x-navbar>
                 
 
@@ -170,21 +439,21 @@
 
     <div class="mx-auto max-w-7xl w-full py-12 sm:py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-20">
         <div class="px-2 sm:px-0 text-center lg:text-left">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-amber-300 leading-tight" data-aos="fade-in" data-aos-delay="400">
+            <h1 class="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-amber-300 leading-tight">
                 Ubah Sampah Jadi Rupiah di Bank Sampah Digital Kami!
             </h1>
-            <p class="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-aos="fade-right" data-aos-delay="800">
+            <p class="hero-description mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 Bergabunglah untuk menjadi nasabah kami dalam platform bank sampah digital ini, ubah sampahmu menjadi saldo E-Wallet
             </p>
-            <div class="mt-8 sm:mt-10 flex items-center justify-center lg:justify-start">
-                <a href="/recycle" class="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base font-semibold text-gray-900 shadow-lg hover:from-amber-500 hover:to-amber-400 transition duration-200" data-aos="fade-right" data-aos-delay="400">
+            <div class="hero-button mt-8 sm:mt-10 flex items-center justify-center lg:justify-start">
+                <a href="/recycle" class="cta-button inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base font-semibold text-gray-900 shadow-lg hover:from-amber-500 hover:to-amber-400 transition duration-200">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     Cari Tahu Bank Sampah Digital
                 </a>
             </div>
         </div>
 
-        <div class="mt-8 lg:mt-0 flex justify-center relative z-20" data-aos="fade-up" data-aos-delay="300">
+        <div class="hero-image mt-8 lg:mt-0 flex justify-center relative z-20">
             <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-t-full bg-gradient-to-br from-amber-300 to-amber-500 relative overflow-hidden p-6 shadow-2xl">
               <img class="w-full h-auto object-contain mx-5" src="{{ asset('image/bumi.png') }}" alt="Recycling and money illustration">
             </div>
@@ -325,7 +594,7 @@
 </div>
 
 
-<section id="products-highlight" class=" min-h-screen py-0 sm:py-32 px-6 lg:px-8">
+<section id="products-highlight" class=" min-h-screen py-24 sm:py-32 px-6 lg:px-8">
     
     <div class="mx-auto max-w-7xl">
         <div class="text-center mb-16">
@@ -549,7 +818,7 @@
 </section>
 
 <section id="how-it-works" class="py-0 sm:py-32 bg-gradient-to-b from-green-800 to-green-900 ">
-    <div class="relative bottom-32">
+    <div class="relative md:bottom-32">
     <svg class="w-full h-32 wave-divider" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
         <path d="M0,40 C180,-20 360,112 720,80 C1080,48 1260,120 1440,72 L1440 0 L0 0 Z" 
               fill="#FDBA74" opacity="0.3"></path>
@@ -591,7 +860,6 @@
 </section>
 
 <section id="accepted-waste" class="relative py-10 sm:py-20 bg-gradient-to-b from-green-900 via-green-800 to-green-700 overflow-hidden">
-  <!-- top decorative circle -->
 
   <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
     <div class="max-w-3xl mx-auto text-center">
@@ -611,7 +879,7 @@
             <p class="text-sm text-gray-500">Barang elektronik bekas atau sparepart-nya</p>
           </div>
           <div class="flex-shrink-0">
-            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-600 text-white shadow">♻️</span>
+            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-600 text-white shadow"></span>
           </div>
         </div>
       </button>
@@ -625,7 +893,7 @@
             <p class="text-sm text-gray-500">Botol Plastik</p>
           </div>
           <div class="flex-shrink-0">
-            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-amber-500 text-white shadow">📄</span>
+            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-amber-500 text-white shadow"></span>
           </div>
         </div>
       </button>
@@ -639,7 +907,7 @@
             <p class="text-sm text-gray-500">Kertas Bekas</p>
           </div>
           <div class="flex-shrink-0">
-            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white shadow">🔩</span>
+            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white shadow"></span>
           </div>
         </div>
       </button>
@@ -652,7 +920,7 @@
             <p class="text-sm text-gray-500">Minyak bekas penggorengan atau minyak lama</p>
           </div>
           <div class="flex-shrink-0">
-            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-red-600 text-white shadow">🍾</span>
+            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-red-600 text-white shadow"></span>
           </div>
         </div>
       </button>
@@ -681,7 +949,6 @@
 </section>
 
 <div id="modal-container" aria-hidden="true">
-  <!-- single modal structure -- will be populated by JS cloning -->
 </div>
 
 <template id="modal-template">
@@ -1080,20 +1347,31 @@
 
     const MODAL_DATA = {
     'modal-plastik': {
-      title: 'Plastik',
-      sub: 'Semua Jenis Kode 1-7 — contoh gambar & kondisi',
+      title: 'Barang Elektronik',
+      sub: 'Barang elektronik bekas atau sparepart-nya selama tidak meledak dan hangus',
       body: `
         <ul class=\"list-disc list-inside space-y-2 pl-2\">
-          <li><strong>PET (Kode 1):</strong> Botol air mineral, botol soda. <em>Kondisi:</em> Kosong, dibilas, tutup dilepas.</li>
-          <li><strong>HDPE (Kode 2):</strong> Botol susu, wadah sampo, deterjen. <em>Kondisi:</em> Kosong, dibilas.</li>
-          <li><strong>PP (Kode 5):</strong> Wadah makanan tebal, tutup botol. <em>Kondisi:</em> Bersih dari sisa makanan.</li>
-          <li><strong>Plastik Film:</strong> Kresek bersih, bungkus sachet (dicuci).</li>
+          <li>HP Bekas</li>
+          <li>PCB.</li>
+          <li>Processor.</li>
+          <li>Bagian-bagian komputer yang rusak, remote rusak, barang elektrik rusak.</li>
         </ul>
-        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Kami <strong>tidak</strong> menerima Styrofoam, kemasan obat, atau plastik sangat berminyak.</p>
+        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Kami <strong>tidak</strong> menerima barang berbahaya, mudah meledak, terbakar, hangus.</p>
       `,
       colorClass: 'bg-green-500'
     },
     'modal-kertas': {
+      title: 'Plastik',
+      sub: 'Kardus, HVS, Koran — contoh dan cara rapikan',
+      body: `
+        <ul class=\"list-disc list-inside space-y-2 pl-2\">
+          <li>Botol plastik, jerigen bekas.</li>
+        </ul>
+        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Tidak menerima plastik yang ada isinya(minyak, air) kecuali penuh, hehe.</p>
+      `,
+      colorClass: 'bg-amber-500'
+    },
+    'modal-logam': {
       title: 'Kertas & Karton',
       sub: 'Kardus, HVS, Koran — contoh dan cara rapikan',
       body: `
@@ -1104,31 +1382,16 @@
         </ul>
         <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Tidak menerima kertas tisu, kertas foto, atau kertas basah.</p>
       `,
-      colorClass: 'bg-amber-500'
-    },
-    'modal-logam': {
-      title: 'Logam & Kaleng',
-      sub: 'Aluminium, besi, perkakas kecil',
-      body: `
-        <ul class=\"list-disc list-inside space-y-2 pl-2\">
-          <li><strong>Aluminium:</strong> Kaleng minuman, foil. Dibilas dan dipipihkan bila perlu.</li>
-          <li><strong>Besi/Timah:</strong> Kaleng makanan, perkakas kecil (tanpa listrik).</li>
-          <li><strong>Logam Lain:</strong> Kabel tembaga bersih, kawat.</li>
-        </ul>
-        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Tidak menerima baterai atau komponen elektronik besar.</p>
-      `,
       colorClass: 'bg-blue-500'
     },
     'modal-kaca': {
-      title: 'Kaca',
-      sub: 'Botol & stoples — kondisi yang diterima',
+      title: 'Minyak Jelantah',
+      sub: 'Minyak jelantah bekas penggorengan atau minyak lama',
       body: `
         <ul class=\"list-disc list-inside space-y-2 pl-2\">
-          <li><strong>Botol Minuman:</strong> Kosong, dibilas, tutup dilepas.</li>
-          <li><strong>Stoples:</strong> Bersih, label boleh dibiarkan.</li>
-          <li><strong>Kaca Bening/Warna:</strong> Diterima selama tidak pecah.</li>
+          <li>Minyak jelantah biasa.</li>
         </ul>
-        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Tidak menerima keramik, bohlam, atau kaca pecah.</p>
+        <p class=\"mt-3 text-xs text-red-500 italic bg-red-50 p-2 rounded border border-red-200\">Tidak menerima minyak angin, minyak budbud dan minyak oplosan ethanol bahlil.</p>
       `,
       colorClass: 'bg-red-500'
     }
@@ -1191,6 +1454,26 @@
     });
   });
 
+</script>
+
+<script>
+// Loading overlay handler
+window.addEventListener('load', function() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        setTimeout(() => {
+            loadingOverlay.classList.add('hidden');
+        }, 800);
+    }
+});
+
+// Hide loading overlay if page is cached (instant load)
+if (document.readyState === 'complete') {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+    }
+}
 </script>
 
 <script>

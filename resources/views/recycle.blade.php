@@ -4,12 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home - Proyek_Tim</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@php
+	$isProduction = app()->environment('production');
+	$manifestPath = $isProduction ? '../public_html/build/manifest.json' : public_path('build/manifest.json');
+@endphp
+        @if ($isProduction && file_exists($manifestPath))
+    @php
+	    $manifest = json_decode(file_get_contents($manifestPath), true)
+	@endphp
+	   <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
+	   <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+@else
+	   @viteReactRefresh
+	   @vite(['resources/js/app.js', 'resources/css/app.css'])
+@endif  
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
         /* Small set of page-specific enhancements while leveraging Tailwind for most styling */
         .hero-bg { background-image: linear-gradient(180deg, rgba(6, 95, 21, 0.72), rgba(4,120,87,0.5)), url('/image/backgorund.webp'); background-size: cover; background-position: center; position: sticky; background-attachment: fixed;}
-        .progress-ring circle { transition: stroke-dashoffset 0.9s cubic-bezier(.2,.9,.3,1); transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .progress-ring circle { transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .progress-ring .progress-bar { transition: stroke-dashoffset 2s cubic-bezier(.2,.9,.3,1); }
         .float-blob { filter: blur(10px); opacity: 0.12; }
         .slider-scroll { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
         .card-surface { backdrop-filter: blur(6px); }
@@ -17,6 +31,85 @@
         /* Small helpers to visually match welcome.blade styles */
         .bg-custom-green-gradient { background: linear-gradient(to right, #10B981, #34D399); }
         .infographic-card { background: linear-gradient(180deg,#ffffff,#f8fff9); border: 1px solid rgba(72,187,120,0.06); }
+
+        /* Enhanced Recycle Page Animations */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .recycle-hero-title {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .recycle-hero-description {
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+
+        .recycle-cta-button {
+            animation: slideInLeft 0.8s ease-out 0.4s both;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .recycle-cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .recycle-form-card {
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .recycle-form-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-card {
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0s; }
+        .step-card:nth-child(2) { animation-delay: 0.15s; }
+        .step-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .stat-item {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0s; }
+        .stat-item:nth-child(2) { animation-delay: 0.1s; }
+        .stat-item:nth-child(3) { animation-delay: 0.2s; }
+
+        /* Progress Circle Animations */
+        @keyframes countUp {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .progress-percentage {
+            animation: countUp 2s ease-out forwards;
+        }
+
+        .progress-text {
+            animation: countUp 2s ease-out forwards;
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800 bg-gray-50 font-sans">
@@ -28,13 +121,13 @@
         <div class="relative max-w-6xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div class="space-y-6">
-                    <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">Setor Sampah Jadi Saldo dan Uang</h1>
-                    <p class="text-lg text-amber-100 max-w-xl">Bergabung jadi nasabah kami, kamu tidak perlu repot-repot setorkan sampahmu karena sudah ada bank sampah digital!.</p>
-                    <div class="flex items-center space-x-4">
-                        <a href="#pengajuan" class="inline-flex items-center px-6 py-3 bg-linear-to-r from-amber-500 to-amber-400 hover:bg-amber-300 text-emerald-900 font-semibold rounded-full shadow">Isi Form Pengajuan</a>
-                        <a href="#bagaimana" class="text-sm text-amber-100 hover:underline">Pelajari Proses →</a>
+                    <h1 class="recycle-hero-title text-4xl sm:text-5xl font-extrabold leading-tight">Setor Sampah Jadi Saldo dan Uang</h1>
+                    <p class="recycle-hero-description text-lg text-amber-100 max-w-xl">Bergabung jadi nasabah kami, kamu tidak perlu repot-repot setorkan sampahmu karena sudah ada bank sampah digital!.</p>
+                    <div class="recycle-cta-button flex items-center space-x-4">
+                        <a href="#pengajuan" class="inline-flex items-center px-6 py-3 bg-linear-to-r from-amber-500 to-amber-400 hover:bg-amber-300 text-emerald-900 font-semibold rounded-full shadow transition-transform hover:scale-105">Isi Form Pengajuan</a>
+                        <a href="#bagaimana" class="text-sm text-amber-100 hover:underline transition-colors">Pelajari Proses →</a>
                     </div>
-                    <div class="mt-4 flex items-center gap-6">
+                    <div class="stat-item mt-4 flex items-center gap-6">
                         <div class="flex items-center space-x-3">
                             <div class="w-3 h-3 rounded-full bg-green-700"></div>
                             <div class="text-sm">Terdaftar: <span class="font-semibold">{{ number_format(\App\Models\User::count()) }}</span></div>
@@ -44,6 +137,7 @@
                             <div class="text-sm">Target komunitas: <span class="font-semibold">1.000</span></div>
                         </div>
                     </div>
+                    
                 </div>
 
                 @php
@@ -64,20 +158,122 @@
                                 <div class="text-sm text-amber-400">{{ number_format($engagedCount) }} / {{ number_format($targetCount) }}</div>
                             </div>
                         </div>
-                        <div class="mt-4 flex items-center justify-center">
+                        <div class="mt-4 flex items-center justify-center relative">
                             <svg width="120" height="120" viewBox="0 0 100 100" class="progress-ring" role="img" aria-label="Progress komunitas">
                                 <circle cx="50" cy="50" r="44" stroke="rgba(255,255,255,1.0)" stroke-width="10" fill="none"></circle>
-                                <circle cx="50" cy="50" r="44" stroke="#047857" stroke-width="10" stroke-dasharray="{{ $circ }}" stroke-dashoffset="{{ $offset }}" stroke-linecap="round" fill="none"></circle>
-                                <text x="50" y="54" text-anchor="middle" font-size="14" fill="#fef3c7" font-weight="700">{{ number_format($percentage, 2, ',', '.') }}%</text>
+                                <circle cx="50" cy="50" r="44" stroke="#047857" stroke-width="10" stroke-dasharray="{{ $circ }}" stroke-dashoffset="{{ $circ }}" stroke-linecap="round" fill="none" class="progress-bar"></circle>
+                                <text x="50" y="54" text-anchor="middle" font-size="14" fill="#fef3c7" font-weight="700" class="progress-percentage" id="progress-number">0%</text>
                             </svg>
                         </div>
-                        <p class="mt-3 text-xs text-amber-400 font-bold text-center">Ayo ajak teman — setiap pendaftaran mendekatkan kita ke target!</p>
+                        <p class="mt-3 text-xs text-amber-400 font-bold text-center progress-text">Ayo ajak teman — setiap pendaftaran mendekatkan kita ke target!</p>
                     </div>
                     <!-- decorative accents similar to welcome page -->
                     <div class="absolute -top-8 -left-10 text-7xl text-green-900 opacity-10 hidden md:block">🌿</div>
                     <div class="absolute -bottom-6 right-6 text-6xl text-amber-300 opacity-10 hidden md:block">♻️</div>
                 </div>
             </div>
+        </div>
+        
+         <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl mt-10 sm:text-4xl font-extrabold text-amber-400">Laporan Sampah Masuk</h2>
+                <p class="text-lg text-gray-100 max-w-2xl mx-auto mt-3">Data real-time sampah yang masuk berdasarkan jenisnya dari kurir dan pengguna kami.</p>
+            </div>
+
+            @php
+                // Use submissions that have been processed/completed by kurir (kurir menerima dan menimbang sampah)
+                $collectedSubmissions = \App\Models\SampahSubmission::where('status', 'completed')->get();
+
+                // Group by wilayah (prefer user->village, fallback to user->adress, else 'Lainnya')
+                $byWilayah = $collectedSubmissions->groupBy(function($item) {
+                    $user = $item->user;
+                    $wilayah = null;
+                    if ($user) {
+                        $wilayah = $user->village ?? $user->adress ?? null;
+                    }
+                    return $wilayah ?: 'Lainnya';
+                });
+
+                // Helper icons for jenis
+                $typeIcons = [
+                    'Barang Elektronik' => '🔌',
+                    'Besi' => '🔩',
+                    'Plastik' => '🧴',
+                    'Minyak Jelantah' => '🫙',
+                    'Sampah Organik' => '🌱',
+                    'Kertas' => '📄',
+                ];
+            @endphp
+
+            @if($byWilayah->isEmpty())
+                <div class="bg-gray-50 rounded-2xl p-8 text-center">
+                    <p class="text-gray-600">Belum ada data sampah yang diterima oleh kurir. Statistik akan muncul setelah kurir menyelesaikan penjemputan.</p>
+                </div>
+            @else
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($byWilayah as $wilayah => $items)
+                        @php
+                            $byType = $items->groupBy('jenis')->map(function($group){
+                                return [
+                                    'count' => $group->count(),
+                                    'total_berat' => $group->sum('berat_aktual') ?? 0,
+                                    'total_poin' => $group->sum('points_awarded') ?? 0,
+                                ];
+                            })->toArray();
+                        @endphp
+                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <div class="text-sm text-gray-500">Wilayah</div>
+                                    <div class="font-bold text-lg text-green-800">{{ $wilayah }}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-600">Total Terima</div>
+                                    <div class="text-2xl font-bold text-amber-500">{{ $items->count() }}</div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                @foreach($byType as $jenis => $data)
+                                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                        <div class="flex items-start justify-between">
+                                            <div>
+                                                <div class="text-sm font-semibold text-gray-700">{{ $jenis }}</div>
+                                                <div class="text-xs text-gray-500">{{ $typeIcons[$jenis] ?? '♻️' }}</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-sm text-gray-600">Jumlah</div>
+                                                <div class="font-bold text-lg text-green-700">{{ $data['count'] }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center justify-between text-xs text-gray-600">
+                                            <div>Total Berat: <span class="font-semibold text-blue-600">{{ number_format($data['total_berat'], 2) }} kg</span></div>
+                                            <div>Total Poin: <span class="font-semibold text-amber-500">{{ number_format($data['total_poin']) }}</span></div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="mt-12 bg-gradient-to-r from-green-700 to-green-500 rounded-2xl p-8 text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold">{{ $collectedSubmissions->count() }}</div>
+                            <p class="text-sm text-green-100 mt-2">Total Pengiriman Diterima</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold">{{ number_format($collectedSubmissions->sum('berat_aktual'), 1) }}</div>
+                            <p class="text-sm text-green-100 mt-2">Total Berat (kg)</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold">{{ number_format($collectedSubmissions->sum('points_awarded')) }}</div>
+                            <p class="text-sm text-green-100 mt-2">Total Poin Diberikan</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 <section id="bank-sampah" class="py-16 bg-white">
@@ -127,7 +323,104 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+        
+    <!-- Bank Modal (inserted for Partnership cards) -->
+    <div id="bank-modal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center px-4  overflow-y-auto">
+        <div id="bank-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-40"></div>
+        <div class="relative z-50 max-w-4xl w-full bg-white sm:rounded-2xl rounded-t-xl shadow-2xl overflow-hidden max-h-[100vh]">
+            <div class="flex items-start justify-between shadow-md p-6 ">
+                <div>
+                    <h3 id="bank-title" class="text-2xl font-bold text-green-800">Bank Sampah</h3>
+                    <div class="text-sm text-gray-500" id="bank-location">Lokasi</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-sm text-gray-600 text-right">
+                        <div class="font-semibold" id="bank-manager">Manager</div>
+                        <div id="bank-contact" class="text-xs">Contact</div>
+                    </div>
+                    <button type="button" aria-label="Tutup" onclick="closeBankModal()" class="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+                        &times;
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[80vh]">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="relative overflow-hidden rounded-xl h-64 bg-gray-100">
+                            <div id="bank-carousel" class="flex h-full transition-transform duration-500 ease-in-out" style="transform: translateX(0%);">
+                            </div>
+                            <button type="button" onclick="prevBankImage()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white">
+                                ‹
+                            </button>
+                            <button type="button" onclick="nextBankImage()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow hover:bg-white">
+                                ›
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3" id="bank-dots" aria-hidden="false">
+                            <!-- dots injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Profil & Deskripsi</h4>
+                        <p id="bank-description" class="text-sm text-gray-600">Deskripsi akan muncul di sini.</p>
+                        <div class="mt-4">
+                            <a id="bank-website" href="#" class="inline-flex items-center px-4 py-2 bg-green-700 text-white rounded-md shadow hover:bg-green-800">Kunjungi Profil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+     <section id="partnership" class="py-16 bg-gray-50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-green-900">Kemitraan Bank Sampah</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-3">Kami berkolaborasi dengan bank sampah terpercaya untuk memastikan sampah Anda dikelola dengan baik.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Bank Sampah Bersinar -->
+                <button type="button" onclick="openBankModal('bersinar')" class="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] p-8 text-left border border-gray-100">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Bank Sampah Bersinar</h3>
+                        <p class="text-gray-600 text-sm mb-4">Melayani wilayah pusat dengan sistem pengolahan sampah organik terbaik di kawasan GunungPutri.</p>
+                        <div class="flex items-center text-green-700 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            Lihat Profil <span class="ml-2">→</span>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Bank Sampah Mutia -->
+                <button type="button" onclick="openBankModal('mutia')" class="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] p-8 text-left border border-gray-100">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Bank Sampah Mutia</h3>
+                        <p class="text-gray-600 text-sm mb-4">Spesialis pengolahan limbah elektronik dan logam dengan sertifikasi internasional dan standar lingkungan tinggi.</p>
+                        <div class="flex items-center text-green-700 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            Lihat Profil <span class="ml-2">→</span>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Bank Sampah Galaxy -->
+                <button type="button" onclick="openBankModal('galaxy')" class="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] p-8 text-left border border-gray-100">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Bank Sampah Galaxy</h3>
+                        <p class="text-gray-600 text-sm mb-4">Komunitas bank sampah terbesar dengan jangkauan area luas dan program edukasi lingkungan untuk masyarakat.</p>
+                        <div class="flex items-center text-green-700 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            Lihat Profil <span class="ml-2">→</span>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        </section>
+
     <!-- KRITERIA SAMPAH -->
     <section id="kriteria" class="py-12 bg-gray-50">
         <div class="max-w-6xl mx-auto px-6">
@@ -539,6 +832,187 @@
             slider.addEventListener('scroll', ()=> requestAnimationFrame(update), {passive:true});
             setTimeout(update, 120);
         })();
+
+    // Progress Counter Animation
+    (function(){
+        const progressNumber = document.getElementById('progress-number');
+        if(!progressNumber) return;
+        
+        const targetPercentage = Number({{ $percentage }});
+        const duration = 2000; // 2 seconds for counting animation
+        const startTime = performance.now();
+        // Animate the SVG progress ring once by changing stroke-dashoffset from full circumference to final offset
+        (function animateRingOnce(){
+            const progressBar = document.querySelector('.progress-ring .progress-bar');
+            if(!progressBar) return;
+            // small delay to ensure initial render (with full circ) is painted
+            setTimeout(()=>{
+                try{
+                    progressBar.style.strokeDashoffset = Number({{ $offset }});
+                }catch(e){
+                    // ignore
+                }
+            }, 50);
+        })();
+        
+        function animateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const currentValue = Math.floor(progress * targetPercentage * 100) / 100;
+            
+            progressNumber.textContent = currentValue.toLocaleString('id-ID', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            }) + '%';
+            
+            if(progress < 1) {
+                requestAnimationFrame(animateCounter);
+            } else {
+                progressNumber.textContent = ({{ $percentage }}).toLocaleString('id-ID', { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                }) + '%';
+            }
+        }
+        
+        requestAnimationFrame(animateCounter);
+    })();
+
+    // Bank Sampah Modal Management
+    const bankData = {
+        bersinar: {
+            title: 'Bank Sampah Bersinar',
+            location: 'Jl. Raya GunungPutri, Bogor',
+            manager: 'Ibu Siti Nurhayati',
+            contact: '(0251) 8123-4567',
+            description: 'Bank Sampah Bersinar adalah lembaga pengelolaan sampah yang berfokus pada pengolahan sampah organik dan komposting. Sejak 2018, kami telah membantu ribuan keluarga di wilayah GunungPutri untuk mengelola sampah mereka dengan cara yang ramah lingkungan. Dengan tim yang berpengalaman dan peralatan modern, kami berkomitmen untuk menciptakan komunitas yang lebih hijau dan berkelanjutan.',
+            images: [
+                '/image/recycle.png',
+                '/image/haduah.webp',
+                '/image/bumi.png',
+                '/image/pot.jpeg'
+            ]
+        },
+        mutia: {
+            title: 'Bank Sampah Mutia',
+            location: 'Jl. Kampung Baru No. 45, GunungPutri',
+            manager: 'Bapak Ahmad Wijaya',
+            contact: '(0251) 8234-5678',
+            description: 'Bank Sampah Mutia spesialis dalam pengolahan limbah elektronik dan logam dengan standar internasional. Sejak 2017, kami memiliki sertifikasi ISO 14001 dan telah mengolah lebih dari 500 ton limbah elektronik. Fasilitas kami dilengkapi dengan teknologi terkini untuk memastikan pemisahan material yang maksimal dan keselamatan lingkungan terjamin.',
+            images: [
+                '/image/komputer.jpg',
+                '/image/laptop.jpeg',
+                '/image/powerbank.jpeg',
+                '/image/tv.jpg'
+            ]
+        },
+        galaxy: {
+            title: 'Bank Sampah Galaxy',
+            location: 'Jl. Pendidikan No. 78, GunungPutri',
+            manager: 'Ibu Eka Rahayu',
+            contact: '(0251) 8345-6789',
+            description: 'Bank Sampah Galaxy adalah komunitas terbesar di wilayah dengan lebih dari 2000 anggota aktif. Kami menawarkan program edukasi lingkungan untuk sekolah dan masyarakat, plus sistem reward points yang kompetitif. Dengan kantor cabang di 8 lokasi strategis, kami memudahkan masyarakat untuk menyetorkan sampah dan mendapatkan imbalan yang menguntungkan.',
+            images: [
+                '/image/shopping.webp',
+                '/image/kita.jpeg',
+                '/image/aurel.JPG',
+                '/image/rt.jpeg'
+            ]
+        }
+    };
+
+    let currentBank = null;
+    let currentImageIndex = 0;
+
+    function openBankModal(bankKey) {
+        currentBank = bankKey;
+        currentImageIndex = 0;
+        const bank = bankData[bankKey];
+        
+        document.getElementById('bank-title').textContent = bank.title;
+        document.getElementById('bank-location').textContent = bank.location;
+        document.getElementById('bank-manager').textContent = bank.manager;
+        document.getElementById('bank-contact').textContent = bank.contact;
+        document.getElementById('bank-description').textContent = bank.description;
+        
+        // Setup carousel
+        const carousel = document.getElementById('bank-carousel');
+        carousel.innerHTML = '';
+        
+        bank.images.forEach((img, idx) => {
+            const slide = document.createElement('div');
+            slide.className = 'min-w-full h-full flex-shrink-0';
+            slide.innerHTML = `<img src="${img}" alt="Kegiatan ${idx + 1}" class="w-full h-full object-cover">`;
+            carousel.appendChild(slide);
+        });
+        
+        // Setup dots
+        const dotsContainer = document.getElementById('bank-dots');
+        dotsContainer.innerHTML = '';
+        bank.images.forEach((_, idx) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = `w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-green-600 w-6' : 'bg-gray-300'}`;
+            dot.onclick = () => goToBankImage(idx);
+            dotsContainer.appendChild(dot);
+        });
+        
+        updateBankCarousel();
+        document.getElementById('bank-modal').classList.remove('hidden');
+        document.getElementById('bank-modal').classList.add('flex');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeBankModal() {
+        document.getElementById('bank-modal').classList.add('hidden');
+        document.getElementById('bank-modal').classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    function nextBankImage() {
+        if (!currentBank) return;
+        const bank = bankData[currentBank];
+        currentImageIndex = (currentImageIndex + 1) % bank.images.length;
+        updateBankCarousel();
+    }
+
+    function prevBankImage() {
+        if (!currentBank) return;
+        const bank = bankData[currentBank];
+        currentImageIndex = (currentImageIndex - 1 + bank.images.length) % bank.images.length;
+        updateBankCarousel();
+    }
+
+    function goToBankImage(idx) {
+        currentImageIndex = idx;
+        updateBankCarousel();
+    }
+
+    function updateBankCarousel() {
+        const carousel = document.getElementById('bank-carousel');
+        carousel.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        
+        const dots = document.querySelectorAll('#bank-dots button');
+        dots.forEach((dot, idx) => {
+            if (idx === currentImageIndex) {
+                dot.classList.remove('w-2', 'bg-gray-300');
+                dot.classList.add('w-6', 'bg-green-600');
+            } else {
+                dot.classList.remove('w-6', 'bg-green-600');
+                dot.classList.add('w-2', 'bg-gray-300');
+            }
+        });
+    }
+
+    // Close modal when clicking backdrop
+    document.getElementById('bank-backdrop')?.addEventListener('click', closeBankModal);
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('bank-modal')?.classList.contains('flex')) {
+            closeBankModal();
+        }
+    });
 
     (function(){
         const openBtn = document.getElementById('open-criteria');

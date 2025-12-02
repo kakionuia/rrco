@@ -31,7 +31,7 @@ php artisan migrate</pre>
             </thead>
             <tbody>
                 @foreach($reviews as $r)
-                <tr class="border-t border-gray-300">
+                <tr class="border-t">
                     <td class="px-3 py-2">{{ $r->user->name }}</td>
                     <td class="px-3 py-2">{{ $r->product->name }}</td>
                     <td class="px-3 py-2">{{ $r->rating }}</td>

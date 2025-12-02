@@ -113,6 +113,26 @@
             100% { background-position: 200% 0; }
         }
 
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes blinkHighlight {
+            0%, 100% { box-shadow: 0 0 0 rgba(252, 211, 77, 0); }
+            50% { box-shadow: 0 0 20px rgba(252, 211, 77, 0.6); }
+        }
+
         .reveal {
             opacity: 0;
             transform: translateY(18px) scale(.995);
@@ -140,6 +160,30 @@
             background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
             background-size: 200% 100%;
             animation: shimmer 1.6s linear infinite;
+        }
+
+        /* Dashboard specific animations */
+        .dashboard-card {
+            animation: fadeUp 0.6s cubic-bezier(.2,.9,.2,1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-stat {
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .dashboard-stat:nth-child(1) { animation-delay: 0s; }
+        .dashboard-stat:nth-child(2) { animation-delay: 0.1s; }
+        .dashboard-stat:nth-child(3) { animation-delay: 0.2s; }
+        .dashboard-stat:nth-child(4) { animation-delay: 0.3s; }
+
+        .dashboard-header {
+            animation: slideInLeft 0.8s ease-out;
         }
 
         /* subtle product hover lift (already present, keep consistent) */
@@ -1080,7 +1124,7 @@
 
     const MODAL_DATA = {
     'modal-plastik': {
-      title: 'Plastik',
+      title: 'Barang Elektronik',
       sub: 'Semua Jenis Kode 1-7 — contoh gambar & kondisi',
       body: `
         <ul class=\"list-disc list-inside space-y-2 pl-2\">

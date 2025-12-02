@@ -1,124 +1,113 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tugas Kurir - Profesional</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Menggunakan font sistem untuk tampilan bersih */
-        body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
-        /* Gaya untuk card tugas yang aktif */
-        .task-card.active {
-            @apply border-green-600 bg-green-50;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Halaman Article</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="bg-gray-100 min-h-screen">
-
-    <div class="container mx-auto p-0 sm:p-4 md:p-8">
-
-        <header class="bg-white shadow-md p-4 md:p-6 mb-4 md:mb-6 rounded-lg">
-            <h1 class="text-3xl font-extrabold text-gray-900">Dashboard Kurir Sampah</h1>
-            <p class="text-lg text-gray-600">Wilayah Blok A Timur | <span class="font-semibold text-green-700">Bambang Wijaya, KS-001</span></p>
-        </header>
-        
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<body class="bg-gray-50">
+    <x-navbar></x-navbar>
+    <div class=" py-16 mt-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="lg:col-span-1 bg-white shadow-xl rounded-xl overflow-hidden h-fit">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-x-12">
                 
-                <div class="p-4 border-b border-gray-200 bg-gray-50">
-                    <h2 class="text-xl font-semibold text-gray-800">Tugas Harian (3 Baru)</h2>
-                </div>
-
-                <div class="divide-y divide-gray-200 max-h-[80vh] overflow-y-auto">
+                <main class="lg:col-span-8">
                     
-                    <div class="task-card active p-4 cursor-pointer border-l-4 border-transparent hover:bg-gray-50 transition duration-150">
-                        <div class="flex justify-between items-center">
-                            <p class="text-sm font-semibold text-gray-900">Penjemputan #101</p>
-                            <span class="px-2 py-0.5 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">Baru</span>
-                        </div>
-                        <p class="text-xs text-gray-600 truncate">Siti Aisyah (Jl. Mawar No. 5)</p>
-                        <p class="text-xs text-gray-500 mt-1">Perkiraan: 5 Kg</p>
-                    </div>
-
-                    <div class="task-card p-4 cursor-pointer border-l-4 border-transparent hover:bg-gray-50 transition duration-150">
-                        <div class="flex justify-between items-center">
-                            <p class="text-sm font-semibold text-gray-900">Penjemputan #102</p>
-                            <span class="px-2 py-0.5 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">Baru</span>
-                        </div>
-                        <p class="text-xs text-gray-600 truncate">Warung Pojok (Pasar Tradisional)</p>
-                        <p class="text-xs text-gray-500 mt-1">Perkiraan: 15 Kg</p>
-                    </div>
-
-                    <div class="task-card p-4 cursor-pointer border-l-4 border-transparent bg-white hover:bg-gray-50 transition duration-150 opacity-60">
-                        <div class="flex justify-between items-center">
-                            <p class="text-sm font-semibold text-gray-900 line-through">Penjemputan #099</p>
-                            <span class="px-2 py-0.5 text-xs font-medium text-green-800 bg-green-100 rounded-full">Selesai</span>
-                        </div>
-                        <p class="text-xs text-gray-600 truncate">Keluarga Budi (Perumahan Indah)</p>
-                        <p class="text-xs text-gray-500 mt-1">Aktual: 7.2 Kg</p>
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="lg:col-span-2 bg-white shadow-xl rounded-xl p-6">
-                
-                <h2 class="text-2xl font-bold text-gray-900 border-b pb-3 mb-4">Detail Tugas #101</h2>
-                
-                <div class="mb-6 p-4 border rounded-lg bg-gray-50">
-                    <p class="text-sm text-gray-500">Informasi Pengguna</p>
-                    <p class="text-xl font-semibold text-gray-800">Siti Aisyah</p>
-                    <p class="text-md text-gray-700">Jl. Mawar No. 5, Blok A Timur</p>
-                    <p class="text-sm text-gray-500 mt-2">Janji Temu: <span class="font-medium text-green-700">09:00 - 10:00</span></p>
-                </div>
-
-                <div class="space-y-6">
-                    <h3 class="text-xl font-bold text-green-700">Konfirmasi Penjemputan</h3>
-                    
-                    <div>
-                        <label for="berat-aktual" class="block text-sm font-medium text-gray-700">1. Berat Aktual Sampah Terkumpul (Kg)</label>
-                        <input type="number" id="berat-aktual" placeholder="Contoh: 5.4" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">2. Pilih Metode Insentif untuk Pengguna</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            
-                            <label class="flex items-center p-4 border border-green-600 rounded-lg shadow-md bg-green-50 cursor-pointer">
-                                <input type="radio" name="insentif" value="poin" checked class="h-5 w-5 text-green-600 border-green-300 focus:ring-green-500">
-                                <span class="ml-3 text-sm font-medium text-green-900">Berikan Poin (Direkomendasikan)</span>
-                            </label>
-
-                            <label class="flex items-center p-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="insentif" value="cash" class="h-5 w-5 text-green-600 border-gray-300 focus:ring-green-500">
-                                <span class="ml-3 text-sm font-medium text-gray-900">Uang Tunai Langsung</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="catatan" class="block text-sm font-medium text-gray-700">3. Catatan (Opsional)</label>
-                        <textarea id="catatan" rows="2" placeholder="Contoh: Sampah sudah dipilah rapi." class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"></textarea>
-                    </div>
-
-                    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-lg shadow-lg transition duration-150 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
-                        <span class="flex items-center justify-center">
-                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                             SELESAIKAN & CATAT TRANSAKSI INI
+                    <div class="mb-8 border-b border-gray-100 pb-6">
+                        <span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase bg-amber-400 text-gray-900">
+                            Daur Ulang
                         </span>
-                    </button>
-                    
-                    <div class="text-center text-xs text-gray-500 pt-2">
-                        Data akan otomatis dikirim ke sistem pencatatan poin.
+                        
+                        <h1 class="mt-4 text-4xl font-extrabold text-gray-900 sm:text-5xl leading-tight">
+                            Perum. Villa Asri 2: Kampung Ramah Lingkungan yang Menginspirasi
+                        </h1>
+                        
+                        <div class="mt-4 flex items-center text-gray-500 text-sm">
+                            <div class="leading-relaxed">
+                                <span class="font-medium text-gray-800 block">Tim Proyek</span>
+                                <time class="text-xs text-gray-500">
+                                    28 November 2025, 14:30 WIB
+                                </time>
+                            </div>
+                            <div class="ml-4 text-xs text-gray-400">• • •</div>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="mb-10">
+                        <div class="mt-6 mb-8">
+                        <img src="{{ asset('image/kita.jpeg') }}" 
+                            alt="Foto" 
+                            class="w-full h-96 object-cover rounded-lg shadow-md" />
+                        </div>
+                        <p class="mt-3 text-sm text-gray-500 italic text-center">
+                            Fasilitas pirolisis dapat mengubah plastik menjadi bahan bakar cair.
+                        </p>
+                    </div>
+
+                    <article class="prose prose-lg max-w-none text-gray-800">
+                        {{-- Render body with line breaks preserved and proper paragraphs --}}
+                        <p>Tim RRCO mewawancarai salah satu penggiat ramah lingkungan baru-baru ini untuk melakukan riset tentang aplikasi yang diluncurkannya, narasumber kami adalah ibu Sustami. </p>
+                    </article>
+
+                    <div class="mt-12 pt-6 border-t border-gray-200 flex justify-between items-center flex-wrap">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="font-semibold text-gray-700 mr-1">Tags:</span>
+                            <a href="#" class="inline-flex items-center px-3 py-1 text-sm font-medium bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition">Daur Ulang</a>
+                            <a href="#" class="inline-flex items-center px-3 py-1 text-sm font-medium bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition">Komunitas</a>
+                        </div>
+
+                        {{-- Tombol Share Sosial Media (Menggunakan placeholder) --}}
+                        <div class="flex items-center space-x-3 mt-4 lg:mt-0">
+                            <span class="text-gray-700 font-semibold">Bagikan:</span>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition" aria-label="Share to Twitter">
+<i class="fa-brands fa-twitter"></i>                            </a>
+                            <a href="#" class="text-gray-400 hover:text-green-600 transition" aria-label="Share to WhatsApp">
+<i class="fa-brands fa-whatsapp"></i>                            </a>
+                        </div>
+                    </div>
+
+                </main>
+
+                <aside class="mt-12 lg:mt-0 lg:col-span-4 space-y-10">
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-gray-900 border-b border-amber-400 pb-3 mb-4">Paling Populer</h3>
+                        <ul class="space-y-4">
+                            @forelse($posts as $post)
+                                <li>
+                                    <a href="{{ route('posts.show', $post['slug']) }}" class="group block">
+                                        <p class="text-xs font-medium text-amber-600">{{ $post['label'] }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-800 group-hover:text-amber-600 transition duration-300 line-clamp-2">
+                                            {{ $post['title'] }}
+                                        </h4>
+                                        <p class="text-sm text-gray-500 mt-1">
+                                            @if(!empty($post['created_at']))
+                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post['created_at'])->format('j M Y') }}
+                                            @else
+                                                Tanpa tanggal
+                                            @endif
+                                        </p>
+                                    </a>
+                                </li>
+                            @empty
+                                <li>
+                                    <p class="text-sm text-gray-500">Tidak ada artikel tersedia</p>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    
+                    
+                </aside>
+                
             </div>
-            
-        </main>
+        </div>
     </div>
 
+    <x-footer></x-footer>
 </body>
 </html>

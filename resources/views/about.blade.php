@@ -5,6 +5,11 @@
     /* Reusable keyframes and utility classes for the About page */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes float { 0%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } 100%{ transform: translateY(0) } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.8); } 50% { transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+    
     .reveal { opacity: 0; transform: translateY(18px); }
     .reveal.in-view { opacity: 1; transform: translateY(0); transition: all 700ms cubic-bezier(.2,.9,.2,1); }
     .float { animation: float 4s ease-in-out infinite; }
@@ -16,16 +21,54 @@
     .shimmer { background-image: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.06) 100%); background-size: 200% 100%; animation: shimmer 3s linear infinite; }
     .slide-left { transform: translateX(-18px); opacity: 0; transition: all 600ms cubic-bezier(.2,.9,.2,1); }
     .slide-left.in-view { transform: translateX(0); opacity: 1; }
+    
+    /* Enhanced animations */
+    .about-hero-title {
+        animation: slideInLeft 0.8s ease-out;
+    }
+    
+    .about-hero-description {
+        animation: slideInLeft 0.8s ease-out 0.2s both;
+    }
+    
+    .about-cta-buttons {
+        animation: slideInLeft 0.8s ease-out 0.4s both;
+    }
+    
+    .about-card {
+        animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .about-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .about-card:nth-child(1) { animation-delay: 0s; }
+    .about-card:nth-child(2) { animation-delay: 0.15s; }
+    .about-card:nth-child(3) { animation-delay: 0.3s; }
+    .about-card:nth-child(4) { animation-delay: 0.45s; }
+    
+    .stat-card {
+        animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .stat-card:nth-child(1) { animation-delay: 0s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.2s; }
+    
     /* FAQ panel smooth height */
     .faq-panel { max-height: 0; overflow: hidden; transition: max-height 420ms ease; }
+    
     /* Prevent ANY absolute blobs from causing horizontal overflow */
     section [class*="absolute"] {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-html, body {
-    overflow-x: hidden !important;
-}
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    html, body {
+        overflow-x: hidden !important;
+    }
 
     /* subtle focus outline for keyboard users */
     .focus-ring:focus { outline: 3px solid rgba(34,197,94,0.25); outline-offset: 3px; }
@@ -42,12 +85,12 @@ html, body {
     <div class="relative max-w-7xl mx-auto px-6 py-28">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div class="lg:pr-12">
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight reveal" data-delay="0">Tentang Reuse Recycle.CO</h1>
-                <p class="mt-4 text-lg text-green-100 max-w-2xl reveal" data-delay="120">Platform daur ulang terpadu yang mengubah sampah layak pakai menjadi produk bernilai—efisien, menguntungkan, dan memberikan reward nyata bagi setiap kontribusi pengguna.</p>
+                <h1 class="about-hero-title text-4xl md:text-5xl font-extrabold leading-tight">Tentang Reuse Recycle.CO</h1>
+                <p class="about-hero-description mt-4 text-lg text-green-100 max-w-2xl">Platform daur ulang terpadu yang mengubah sampah layak pakai menjadi produk bernilai—efisien, menguntungkan, dan memberikan reward nyata bagi setiap kontribusi pengguna.</p>
 
-                <div class="mt-8 flex flex-wrap gap-3 reveal" data-delay="240">
-                    <a href="{{ route('recycle') }}" class="inline-flex items-center px-5 py-3 bg-amber-400 text-green-900 rounded-md font-semibold shadow focus-ring">Mulai Daur Ulang</a>
-                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-5 py-3 border border-white/30 text-white rounded-md font-semibold hover:bg-white/5 focus-ring">Lihat Produk Kami</a>
+                <div class="about-cta-buttons mt-8 flex flex-wrap gap-3">
+                    <a href="{{ route('recycle') }}" class="inline-flex items-center px-5 py-3 bg-amber-400 text-green-900 rounded-md font-semibold shadow focus-ring hover:scale-105 transition-transform">Mulai Daur Ulang</a>
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-5 py-3 border border-white/30 text-white rounded-md font-semibold hover:bg-white/5 focus-ring transition-colors">Lihat Produk Kami</a>
                 </div>
                 <div class="mt-4">
                 </div>
@@ -71,13 +114,7 @@ html, body {
                             <div class="text-xl font-bold stat-num" data-target="{{ $productCount }}">{{ $productCount }}</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-amber-400/10 rounded-lg flex items-center justify-center float">🤝</div>
-                        <div>
-                            <div class="text-xs">Partnership with</div>
-                            <div class="text-xl font-bold stat-num">-</div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 
